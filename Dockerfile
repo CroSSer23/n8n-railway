@@ -11,4 +11,5 @@ ENV N8N_USER_ID=root
 EXPOSE 8080
 
 # Печатаем важные env и жёстко слушаем $PORT на 0.0.0.0
-CMD ["sh","-lc","echo Effective PORT=${PORT} ; env | grep -E '^(N8N_|DB_|PORT=)' || true ; n8n start --port ${PORT} --host 0.0.0.0"]
+CMD ["sh","-lc","echo PORT=${PORT} ; export N8N_PORT=${PORT} ; echo N8N_PORT=$N8N_PORT ; n8n start --host 0.0.0.0"]
+
