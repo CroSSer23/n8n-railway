@@ -1,15 +1,15 @@
 FROM node:22-alpine
 ARG N8N_VERSION=1.109.0
 
-RUN apk add --update graphicsmagick tzdata
-RUN apk --update add --virtual build-dependencies python3 build-base && \
-    npm_config_user=root npm install --location=global n8n@${N8N_VERSION} && \
-    apk del build-dependencies
+RUN apk add --no-cache graphicsmagick tzdata \
+ && apk add --no-cache --virtual build-dependencies python3 build-base \
+ && npm_config_user=root npm i -g n8n@${N8N_VERSION} \
+ && apk del build-dependencies
 
 WORKDIR /data
 ENV N8N_USER_ID=root
-# EXPOSE можно оставить, но числом; это лишь декларация для людей/инструментов
+# EXPOSE информативен, на работу не влияет. Можно оставить 8080.
 EXPOSE 8080
 
-# Критично: слушать именно $PORT, которое задаёт Railway (часто 8080, но бывает другое)
-CMD ["sh","-lc","n8n start --port ${PORT:-8080}"]
+# Критично: слушать именно $PORT от Railway и на 0.0.0.0
+CMD ["sh","-lc","echo Starting n8n on PORT=${PORT} && n8n start --port ${PORT} --host 0.0.0.0"]
