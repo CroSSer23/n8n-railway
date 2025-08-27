@@ -8,8 +8,7 @@ RUN apk add --no-cache graphicsmagick tzdata \
 
 WORKDIR /data
 ENV N8N_USER_ID=root
-# EXPOSE информативен, на работу не влияет. Можно оставить 8080.
 EXPOSE 8080
 
-# Критично: слушать именно $PORT от Railway и на 0.0.0.0
-CMD ["sh","-lc","echo Starting n8n on PORT=${PORT} && n8n start --port ${PORT} --host 0.0.0.0"]
+# Печатаем важные env и жёстко слушаем $PORT на 0.0.0.0
+CMD ["sh","-lc","echo Effective PORT=${PORT} ; env | grep -E '^(N8N_|DB_|PORT=)' || true ; n8n start --port ${PORT} --host 0.0.0.0"]
