@@ -1,5 +1,5 @@
 FROM node:22-alpine
-ARG N8N_VERSION=1.81.0
+ARG N8N_VERSION=2.14.2
 RUN apk add --no-cache graphicsmagick tzdata \
  && apk add --no-cache --virtual build-dependencies python3 build-base \
  && npm_config_user=root npm i -g n8n@${N8N_VERSION} \
